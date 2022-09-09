@@ -1,0 +1,214 @@
+{
+  "messages": [
+    {
+      "message": "ら抜き言葉です",
+      "severity": "error",
+      "from": {
+        "line": 17,
+        "ch": 3
+      },
+      "to": {
+        "line": 17,
+        "ch": 7
+      },
+      "index": 219,
+      "index_to": 223,
+      "before": "食べれる",
+      "after": "食べられる"
+    },
+    {
+      "message": "同じ語が繰り返されています",
+      "severity": "error",
+      "from": {
+        "line": 12,
+        "ch": 4
+      },
+      "to": {
+        "line": 12,
+        "ch": 5
+      },
+      "index": 150,
+      "index_to": 151,
+      "before": "の",
+      "after": "トル"
+    },
+    {
+      "message": "同じ語が繰り返されています",
+      "severity": "error",
+      "from": {
+        "line": 16,
+        "ch": 6
+      },
+      "to": {
+        "line": 16,
+        "ch": 8
+      },
+      "index": 206,
+      "index_to": 208,
+      "before": "会計",
+      "after": "トル"
+    },
+    {
+      "message": "不要な文字かもしれません",
+      "severity": "warning",
+      "from": {
+        "line": 12,
+        "ch": 12
+      },
+      "to": {
+        "line": 12,
+        "ch": 13
+      },
+      "index": 158,
+      "index_to": 159,
+      "before": "あ",
+      "after": "トル"
+    },
+    {
+      "message": "謙譲語には「い たす」でなく「する」を使います",
+      "severity": "error",
+      "from": {
+        "line": 8,
+        "ch": 20
+      },
+      "to": {
+        "line": 8,
+        "ch": 23
+      },
+      "index": 104,
+      "index_to": 107,
+      "before": "いたし",
+      "after": "し"
+    },
+    {
+      "message": "謙譲語になっています。「ご」か「して」を取ってください",
+      "severity": "error",
+      "from": {
+        "line": 8,
+        "ch": 4
+      },
+      "to": {
+        "line": 8,
+        "ch": 5
+      },
+      "index": 88,
+      "index_to": 89,
+      "before": "ご",
+      "after": "トル"
+    },
+    {
+      "message": "謙譲語になっています。「ご」か「して」を取ってください",
+      "severity": "error",
+      "from": {
+        "line": 8,
+        "ch": 7
+      },
+      "to": {
+        "line": 8,
+        "ch": 9
+      },
+      "index": 91,
+      "index_to": 93,
+      "before": "して",
+      "after": "トル"
+    },
+    {
+      "message": "「ご」や「して」を付けると日本語として正しくなります",
+      "severity": "error",
+      "from": {
+        "line": 7,
+        "ch": 10
+      },
+      "to": {
+        "line": 7,
+        "ch": 12
+      },
+      "index": 76,
+      "index_to": 78,
+      "before": "相談",
+      "after": "相談して"
+    },
+    {
+      "message": "IT用語の表記",
+      "severity": "error",
+      "from": {
+        "line": 14,
+        "ch": 18
+      },
+      "to": {
+        "line": 14,
+        "ch": 24
+      },
+      "index": 184,
+      "index_to": 190,
+      "before": "Github",
+      "after": "GitHub"
+    },
+    {
+      "message": "IT用語の表記",
+      "severity": "error",
+      "from": {
+        "line": 14,
+        "ch": 0
+      },
+      "to": {
+        "line": 14,
+        "ch": 7
+      },
+      "index": 166,
+      "index_to": 173,
+      "before": "Youtube",
+      "after": "YouTube"
+    },
+    {
+      "message": "もしかしてAI",
+      "severity": "warning",
+      "from": {
+        "line": 2,
+        "ch": 10
+      },
+      "to": {
+        "line": 2,
+        "ch": 12
+      },
+      "index": 24,
+      "index_to": 26,
+      "before": "運行",
+      "after": "運航"
+    },
+    {
+      "message": "もしかしてAI",
+      "severity": "warning",
+      "from": {
+        "line": 5,
+        "ch": 4
+      },
+      "to": {
+        "line": 5,
+        "ch": 5
+      },
+      "index": 56,
+      "index_to": 57,
+      "before": "で",
+      "after": "の"
+    },
+    {
+      "message": "もしかしてAI",
+      "severity": "warning",
+      "from": {
+        "line": 11,
+        "ch": 10
+      },
+      "to": {
+        "line": 11,
+        "ch": 11
+      },
+      "index": 141,
+      "index_to": 142,
+      "before": "い",
+      "after": "トル"
+    }
+  ],
+  "status": "done",
+  "updated": 1662693907
+}
