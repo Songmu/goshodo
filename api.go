@@ -73,12 +73,12 @@ func (c *client) CreateLint(ctx context.Context, body string) (string, error) {
 	return r.LintID, nil
 }
 
-type pos struct {
+type LintPosition struct {
 	Ch   int `json:"ch"`
 	Line int `json:"line"`
 }
 
-func (p pos) String() string {
+func (p LintPosition) String() string {
 	return fmt.Sprintf("%d:%d", p.Line+1, p.Ch+1)
 }
 
@@ -89,21 +89,21 @@ const (
 	severityWraning severity = "warning"
 )
 
-type message struct {
-	After    string   `json:"after"`
-	Before   string   `json:"before"`
-	From     pos      `json:"from"`
-	To       pos      `json:"to"`
-	Index    int      `json:"index"`
-	IndexTo  int      `json:"index_to"`
-	Message  string   `json:"message"`
-	Severity severity `json:"severity"`
+type LintMessage struct {
+	After    string       `json:"after"`
+	Before   string       `json:"before"`
+	From     LintPosition `json:"from"`
+	To       LintPosition `json:"to"`
+	Index    int          `json:"index"`
+	IndexTo  int          `json:"index_to"`
+	Message  string       `json:"message"`
+	Severity severity     `json:"severity"`
 }
 
-type response struct {
-	Messages []message  `json:"messages"`
-	Status   lintStatus `json:"status"`
-	Updated  int64      `json:"updated"`
+type LintResult struct {
+	Messages []LintMessage `json:"messages"`
+	Status   lintStatus    `json:"status"`
+	Updated  int64         `json:"updated"`
 }
 
 type lintStatus string
@@ -120,7 +120,7 @@ var (
 	lintFailedError     = errors.New("lint failed")
 )
 
-func (c *client) LintResult(ctx context.Context, id string) (*response, error) {
+func (c *client) LintResult(ctx context.Context, id string) (*LintResult, error) {
 	for trial := 10; trial > 0; trial-- {
 		r, err := c.lintResult(ctx, id)
 		if err == nil {
@@ -139,7 +139,7 @@ func (c *client) LintResult(ctx context.Context, id string) (*response, error) {
 	return nil, fmt.Errorf("failed to lint for id: %s", id)
 }
 
-func (c *client) lintResult(ctx context.Context, id string) (*response, error) {
+func (c *client) lintResult(ctx context.Context, id string) (*LintResult, error) {
 	resp, err := c.c.Do(c.newRequest(ctx, http.MethodGet, fmt.Sprintf("lint/%s/", id), nil))
 	if err != nil {
 		return nil, err
@@ -154,7 +154,7 @@ func (c *client) lintResult(ctx context.Context, id string) (*response, error) {
 		return nil, fmt.Errorf("server returned response code: %d", resp.StatusCode)
 	}
 
-	var r response
+	var r LintResult
 	if err := json.NewDecoder(resp.Body).Decode(&r); err != nil {
 		return nil, err
 	}
