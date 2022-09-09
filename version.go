@@ -1,4 +1,4 @@
-package shodo
+package goshodo
 
 const version = "0.0.0"
 

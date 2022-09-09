@@ -1,4 +1,4 @@
-package shodo
+package goshodo
 
 import (
 	"context"

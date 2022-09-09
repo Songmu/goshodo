@@ -6,12 +6,12 @@ import (
 	"log"
 	"os"
 
-	"github.com/Songmu/shodo"
+	"github.com/Songmu/goshodo"
 )
 
 func main() {
 	log.SetFlags(0)
-	err := shodo.Run(context.Background(), os.Args[1:], os.Stdout, os.Stderr)
+	err := goshodo.Run(context.Background(), os.Args[1:], os.Stdout, os.Stderr)
 	if err != nil && err != flag.ErrHelp {
 		log.Println(err)
 		exitCode := 1

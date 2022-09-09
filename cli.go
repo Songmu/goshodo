@@ -1,4 +1,4 @@
-package shodo
+package goshodo
 
 import (
 	"context"
@@ -9,9 +9,9 @@ import (
 	"log"
 )
 
-const cmdName = "shodo"
+const cmdName = "goshodo"
 
-// Run the shodo
+// Run the goshodo
 func Run(ctx context.Context, argv []string, outStream, errStream io.Writer) error {
 	log.SetOutput(errStream)
 	fs := flag.NewFlagSet(

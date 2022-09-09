@@ -1,4 +1,4 @@
-package shodo
+package goshodo
 
 import (
 	"bytes"
@@ -56,7 +56,7 @@ func (ls *lints) List() []*Lint {
 }
 
 func doLint(ctx context.Context, argv []string, outStream, errStream io.Writer) error {
-	fs := flag.NewFlagSet("shodo lint", flag.ContinueOnError)
+	fs := flag.NewFlagSet("goshodo lint", flag.ContinueOnError)
 	fs.SetOutput(errStream)
 	format := fs.String("f", "", "format")
 	if err := fs.Parse(argv); err != nil {
