@@ -2,7 +2,10 @@ module github.com/Songmu/shodo
 
 go 1.19
 
-require github.com/fatih/color v1.13.0
+require (
+	github.com/fatih/color v1.13.0
+	golang.org/x/sync v0.0.0-20220907140024-f12130a52804
+)
 
 require (
 	github.com/mattn/go-colorable v0.1.12 // indirect
