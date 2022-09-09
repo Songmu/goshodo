@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.0.3](https://github.com/Songmu/goshodo/compare/v0.0.2...v0.0.3) - 2022-09-09
+- fix sugestion by @Songmu in https://github.com/Songmu/goshodo/pull/8
+
 ## [v0.0.2](https://github.com/Songmu/goshodo/compare/v0.0.1...v0.0.2) - 2022-09-09
 - try to use suggestion comment by @Songmu in https://github.com/Songmu/goshodo/pull/6
 
