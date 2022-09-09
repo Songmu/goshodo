@@ -4,11 +4,13 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
 	"os"
+	"time"
 )
 
 const userAgentBase = "Songmu-shodo/%s (+https://github.com/Songmu/shodo)"
@@ -98,10 +100,18 @@ type message struct {
 }
 
 type response struct {
-	Messages []message `json:"messages"`
-	Status   string    `json:"status"`
-	Updated  int64     `json:"updated"`
+	Messages []message  `json:"messages"`
+	Status   lintStatus `json:"status"`
+	Updated  int64      `json:"updated"`
 }
+
+type lintStatus string
+
+const (
+	statusDone       lintStatus = "done"
+	statusProcessing lintStatus = "processing"
+	statusFailed     lintStatus = "failed"
+)
 
 func (c *client) lintResult(ctx context.Context, id string) (*response, error) {
 	resp, err := c.c.Do(c.newRequest(ctx, http.MethodGet, fmt.Sprintf("lint/%s/", id), nil))
@@ -110,6 +120,11 @@ func (c *client) lintResult(ctx context.Context, id string) (*response, error) {
 	}
 	defer resp.Body.Close()
 
+	if resp.StatusCode == http.StatusNotFound {
+		time.Sleep(500 * time.Millisecond)
+		return c.lintResult(ctx, id)
+	}
+
 	if resp.StatusCode != http.StatusOK {
 		return nil, fmt.Errorf("server returned response code: %d", resp.StatusCode)
 	}
@@ -117,6 +132,13 @@ func (c *client) lintResult(ctx context.Context, id string) (*response, error) {
 	var r response
 	if err := json.NewDecoder(resp.Body).Decode(&r); err != nil {
 		return nil, err
+	}
+	if r.Status == statusProcessing {
+		time.Sleep(500 * time.Millisecond)
+		return c.lintResult(ctx, id)
+	}
+	if r.Status == statusFailed {
+		return nil, errors.New("failed to lint")
 	}
 	return &r, nil
 }
