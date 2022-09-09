@@ -50,7 +50,7 @@ func (c *client) newRequest(ctx context.Context, method, p string, body io.Reade
 }
 
 // https://github.com/zenproducts/developers.shodo.ink/blob/master/docs/api.md
-func (c *client) createLint(ctx context.Context, body string) (string, error) {
+func (c *client) CreateLint(ctx context.Context, body string) (string, error) {
 	payload := map[string]string{"body": body}
 	j, _ := json.Marshal(payload)
 	b := bytes.NewReader(j)
@@ -113,6 +113,27 @@ const (
 	statusFailed     lintStatus = "failed"
 )
 
+var (
+	notFoundError       = errors.New("server returned response code: 400")
+	lintProcessingError = errors.New("lint is processing")
+	lintFailedError     = errors.New("lint failed")
+)
+
+func (c *client) LintResult(ctx context.Context, id string) (*response, error) {
+	for trial := 10; trial > 0; trial-- {
+		r, err := c.lintResult(ctx, id)
+		if err == nil {
+			return r, nil
+		}
+		if errors.Is(err, notFoundError) || errors.Is(err, lintProcessingError) {
+			time.Sleep(500 * time.Millisecond)
+			continue
+		}
+		return nil, err
+	}
+	return nil, fmt.Errorf("failed to lint for id: %s", id)
+}
+
 func (c *client) lintResult(ctx context.Context, id string) (*response, error) {
 	resp, err := c.c.Do(c.newRequest(ctx, http.MethodGet, fmt.Sprintf("lint/%s/", id), nil))
 	if err != nil {
@@ -121,8 +142,7 @@ func (c *client) lintResult(ctx context.Context, id string) (*response, error) {
 	defer resp.Body.Close()
 
 	if resp.StatusCode == http.StatusNotFound {
-		time.Sleep(500 * time.Millisecond)
-		return c.lintResult(ctx, id)
+		return nil, notFoundError
 	}
 
 	if resp.StatusCode != http.StatusOK {
@@ -134,11 +154,10 @@ func (c *client) lintResult(ctx context.Context, id string) (*response, error) {
 		return nil, err
 	}
 	if r.Status == statusProcessing {
-		time.Sleep(500 * time.Millisecond)
-		return c.lintResult(ctx, id)
+		return nil, lintProcessingError
 	}
 	if r.Status == statusFailed {
-		return nil, errors.New("failed to lint")
+		return nil, lintFailedError
 	}
 	return &r, nil
 }

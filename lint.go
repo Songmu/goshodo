@@ -34,12 +34,12 @@ func doLint(ctx context.Context, argv []string, outStream, errStream io.Writer) 
 	if err != nil {
 		return err
 	}
-	id, err := c.createLint(ctx, string(body))
+	id, err := c.CreateLint(ctx, string(body))
 	if err != nil {
 		return err
 	}
 	log.Println("Linting...")
-	r, err := c.lintResult(ctx, id)
+	r, err := c.LintResult(ctx, id)
 	if err != nil {
 		return err
 	}
