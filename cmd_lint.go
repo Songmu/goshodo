@@ -19,12 +19,26 @@ import (
 type Lint struct {
 	Result        *LintResult
 	File, Content string
+
+	lines []string
 }
 
-func (l *Lint) Correspond(m LintMessage) (string, string, string) {
-	return substr(l.Content, m.Index-10, m.Index),
+// rune range
+func (l *Lint) Correspond(m LintMessage, bound int) (string, string, string) {
+	return substr(l.Content, m.Index-bound, m.Index),
 		substr(l.Content, m.Index, m.IndexTo),
-		substr(l.Content, m.IndexTo, m.IndexTo+10)
+		substr(l.Content, m.IndexTo, m.IndexTo+bound)
+}
+
+// 0 origin
+func (l *Lint) Line(n int) string {
+	if l.lines == nil {
+		l.lines = strings.Split(l.Content, "\n")
+	}
+	if n < 0 || len(l.lines) <= n {
+		return ""
+	}
+	return l.lines[n]
 }
 
 func substr(content string, from, to int) string {
@@ -123,7 +137,7 @@ func doLint(ctx context.Context, argv []string, outStream, errStream io.Writer) 
 			if m.After != "" {
 				fix = fmt.Sprintf("（→ %s）", m.After)
 			}
-			pre, match, post := l.Correspond(m)
+			pre, match, post := l.Correspond(m, 10)
 			buf.WriteString(pre)
 			co.Fprint(buf, match+fix)
 			buf.WriteString(post)
