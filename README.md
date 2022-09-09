@@ -2,12 +2,10 @@ goshodo
 =======
 
 [![Test Status](https://github.com/Songmu/goshodo/workflows/test/badge.svg?branch=main)][actions]
-[![Coverage Status](https://codecov.io/gh/Songmu/goshodo/branch/main/graph/badge.svg)][codecov]
 [![MIT License](https://img.shields.io/github/license/Songmu/goshodo)][license]
 [![PkgGoDev](https://pkg.go.dev/badge/github.com/Songmu/goshodo)][PkgGoDev]
 
 [actions]: https://github.com/Songmu/goshodo/actions?workflow=test
-[codecov]: https://codecov.io/gh/Songmu/goshodo
 [license]: https://github.com/Songmu/goshodo/blob/main/LICENSE
 [PkgGoDev]: https://pkg.go.dev/github.com/Songmu/goshodo
 
@@ -18,7 +16,7 @@ goshodo is a CLI tool for shodo (https://shodo.ink) in Go
 ```console
 % export SHODO_API_TOKEN=...
 % export SHODO_API_ROOT=https://...
-% shodo lint testdata/demo.md
+% goshodo lint testdata/demo.md
 Linting...
 3:11 もしかしてAI
     飛行機の欠便があり、運行（→ 運航）状況が変わった。 バ
