@@ -48,7 +48,7 @@ func fprintCheckStyle(w io.Writer, lints []*Lint) error {
 				pres := strings.Split(pre, "\n")
 				p := pres[len(pres)-1]
 				po := strings.Split(post, "\n")[0]
-				postMsg = fmt.Sprintf("```suggestsion\n%s%s%s\n```", p, after, po)
+				postMsg = fmt.Sprintf("```suggestion\n%s%s%s\n```\n", p, after, po)
 			} else {
 				fix := ""
 				if m.After != "" {
