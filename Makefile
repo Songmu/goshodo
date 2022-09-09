@@ -1,6 +1,6 @@
 VERSION = $(shell godzil show-version)
 CURRENT_REVISION = $(shell git rev-parse --short HEAD)
-BUILD_LDFLAGS = "-s -w -X github.com/Songmu/shodo.revision=$(CURRENT_REVISION)"
+BUILD_LDFLAGS = "-s -w -X github.com/Songmu/goshodo.revision=$(CURRENT_REVISION)"
 u := $(if $(update),-u)
 
 .PHONY: deps
@@ -18,11 +18,11 @@ test:
 
 .PHONY: build
 build:
-	go build -ldflags=$(BUILD_LDFLAGS) ./cmd/shodo
+	go build -ldflags=$(BUILD_LDFLAGS) ./cmd/goshodo
 
 .PHONY: install
 install:
-	go install -ldflags=$(BUILD_LDFLAGS) ./cmd/shodo
+	go install -ldflags=$(BUILD_LDFLAGS) ./cmd/goshodo
 
 .PHONY: release
 release: devel-deps

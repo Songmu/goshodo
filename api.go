@@ -1,4 +1,4 @@
-package shodo
+package goshodo
 
 import (
 	"bytes"
@@ -14,7 +14,7 @@ import (
 	"time"
 )
 
-const userAgentBase = "Songmu-shodo/%s (+https://github.com/Songmu/shodo)"
+const userAgentBase = "Songmu-goshodo/%s (+https://github.com/Songmu/goshodo)"
 
 type doer interface {
 	Do(*http.Request) (*http.Response, error)
@@ -28,11 +28,11 @@ type client struct {
 func newClient() (*client, error) {
 	root, ok := os.LookupEnv("SHODO_API_ROOT")
 	if !ok {
-		return nil, fmt.Errorf("no shodo api root")
+		return nil, fmt.Errorf("no SHODO api root")
 	}
 	token, ok := os.LookupEnv("SHODO_API_TOKEN")
 	if !ok {
-		return nil, fmt.Errorf("no shodo api token")
+		return nil, fmt.Errorf("no SHODO api token")
 	}
 	return &client{
 		c:     http.DefaultClient,

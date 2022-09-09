@@ -1,4 +1,4 @@
-module github.com/Songmu/shodo
+module github.com/Songmu/goshodo
 
 go 1.19
 
