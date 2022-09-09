@@ -11,15 +11,21 @@ goshodo
 [license]: https://github.com/Songmu/goshodo/blob/main/LICENSE
 [PkgGoDev]: https://pkg.go.dev/github.com/Songmu/goshodo
 
-goshodo short description
+goshodo is a CLI tool for shodo (https://shodo.ink) in Go
 
 ## Synopsis
 
-```go
-// simple usage here
+```console
+% export SHODO_API_TOKEN=...
+% export SHODO_API_ROOT=https://...
+% shodo lint testdata/demo.md
+Linting...
+3:11 もしかしてAI
+    飛行機の欠便があり、運行（→ 運航）状況が変わった。 バ
+6:5 もしかしてAI
+    ません。  これが私で（→ の）自己紹介です。  こ
+...
 ```
-
-## Description
 
 ## Installation
 
@@ -36,6 +42,10 @@ goshodo short description
 # go install
 % go install github.com/Songmu/goshodo/cmd/goshodo@latest
 ```
+
+## See Also
+- https://shodo.ink
+- https://github.com/zenproducts/shodo-python/
 
 ## Author
 
