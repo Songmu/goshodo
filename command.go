@@ -7,7 +7,7 @@ import (
 
 var (
 	dispatch = map[string]*command{
-		"lint": &command{run: doLint},
+		"lint": {run: doLint},
 	}
 )
 
