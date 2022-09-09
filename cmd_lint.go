@@ -21,18 +21,35 @@ type Lint struct {
 	File, Content string
 }
 
-type Lints struct {
+func (l *Lint) Correspond(m LintMessage) (string, string, string) {
+	return substr(l.Content, m.Index-10, m.Index),
+		substr(l.Content, m.Index, m.IndexTo),
+		substr(l.Content, m.IndexTo, m.IndexTo+10)
+}
+
+func substr(content string, from, to int) string {
+	rs := []rune(content)
+	if from < 0 {
+		from = 0
+	}
+	if to > len(rs) {
+		to = len(rs)
+	}
+	return string(rs[from:to])
+}
+
+type lints struct {
 	l  []*Lint
 	mu sync.RWMutex
 }
 
-func (ls *Lints) Append(l *Lint) {
+func (ls *lints) Append(l *Lint) {
 	ls.mu.Lock()
 	defer ls.mu.Unlock()
 	ls.l = append(ls.l, l)
 }
 
-func (ls *Lints) List() []*Lint {
+func (ls *lints) List() []*Lint {
 	ls.mu.RLock()
 	defer ls.mu.RUnlock()
 	return ls.l
@@ -41,6 +58,7 @@ func (ls *Lints) List() []*Lint {
 func doLint(ctx context.Context, argv []string, outStream, errStream io.Writer) error {
 	fs := flag.NewFlagSet("shodo lint", flag.ContinueOnError)
 	fs.SetOutput(errStream)
+	format := fs.String("f", "", "format")
 	if err := fs.Parse(argv); err != nil {
 		return err
 	}
@@ -52,7 +70,7 @@ func doLint(ctx context.Context, argv []string, outStream, errStream io.Writer) 
 	log.Println("Linting...")
 	g, ctx := errgroup.WithContext(ctx)
 	g.SetLimit(6)
-	ls := &Lints{}
+	ls := &lints{}
 	for _, f := range files {
 		f := f
 		g.Go(func() error {
@@ -86,23 +104,15 @@ func doLint(ctx context.Context, argv []string, outStream, errStream io.Writer) 
 		return err
 	}
 	lints := ls.List()
+	if *format == "checkstyle" {
+		return fprintCheckStyle(outStream, lints)
+	}
 
 	single := len(lints) == 1
 	for _, l := range lints {
 		if !single {
 			fmt.Fprintf(outStream, "%s:\n", l.File)
 		}
-		runes := []rune(l.Content)
-		substr := func(rs []rune, from, to int) string {
-			if from < 0 {
-				from = 0
-			}
-			if to > len(rs) {
-				to = len(rs)
-			}
-			return string(rs[from:to])
-		}
-
 		for _, m := range l.Result.Messages {
 			co := color.New(color.FgRed)
 			if m.Severity == severityWraning {
@@ -113,9 +123,10 @@ func doLint(ctx context.Context, argv []string, outStream, errStream io.Writer) 
 			if m.After != "" {
 				fix = fmt.Sprintf("（→ %s）", m.After)
 			}
-			buf.WriteString(substr(runes, m.Index-10, m.Index))
-			co.Fprint(buf, substr(runes, m.Index, m.IndexTo)+fix)
-			buf.WriteString(substr(runes, m.IndexTo, m.IndexTo+10))
+			pre, match, post := l.Correspond(m)
+			buf.WriteString(pre)
+			co.Fprint(buf, match+fix)
+			buf.WriteString(post)
 			fmt.Fprintln(outStream, m.From.String(), m.Message)
 			fmt.Fprintln(outStream, "    "+strings.Replace(buf.String(), "\n", " ", -1))
 		}
