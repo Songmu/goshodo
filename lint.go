@@ -55,7 +55,6 @@ func doLint(ctx context.Context, argv []string, outStream, errStream io.Writer) 
 		return string(rs[from:to])
 	}
 
-	// TODO: sort
 	for _, m := range r.Messages {
 		co := color.New(color.FgRed)
 		if m.Severity == severityWraning {

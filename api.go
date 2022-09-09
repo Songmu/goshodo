@@ -10,6 +10,7 @@ import (
 	"net/http"
 	"net/url"
 	"os"
+	"sort"
 	"time"
 )
 
@@ -123,6 +124,10 @@ func (c *client) LintResult(ctx context.Context, id string) (*response, error) {
 	for trial := 10; trial > 0; trial-- {
 		r, err := c.lintResult(ctx, id)
 		if err == nil {
+			sort.Slice(r.Messages, func(i, j int) bool {
+				m1, m2 := r.Messages[i], r.Messages[j]
+				return m1.Index < m2.Index || m1.Index == m2.Index && m1.IndexTo < m2.IndexTo
+			})
 			return r, nil
 		}
 		if errors.Is(err, notFoundError) || errors.Is(err, lintProcessingError) {
